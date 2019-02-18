@@ -97,7 +97,6 @@ public class MinerHelper {
                     track,
                     null,
                     null,
-
                     null,
                     block,
                     new EthereumListenerAdapter(),
