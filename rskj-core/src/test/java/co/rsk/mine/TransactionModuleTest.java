@@ -18,6 +18,7 @@
 
 package co.rsk.mine;
 
+import co.rsk.core.SignatureCache;
 import co.rsk.config.ConfigUtils;
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.*;
@@ -87,6 +88,7 @@ public class TransactionModuleTest {
 
         Web3Impl web3 = createEnvironment(blockchain, null, repository, transactionPool, blockStore, signatureCache,false);
 
+
         String tx = sendTransaction(web3, repository);
 
         Assert.assertEquals(0, blockchain.getBestBlock().getNumber());
@@ -110,6 +112,7 @@ public class TransactionModuleTest {
         TransactionPool transactionPool = new TransactionPoolImpl(config, repository, blockStore, null, signatureCache, null, null, 10, 100);
 
         Web3Impl web3 = createEnvironment(blockchain, null, repository, transactionPool, blockStore, signatureCache,true);
+
 
         String tx = sendTransaction(web3, repository);
 
@@ -136,7 +139,7 @@ public class TransactionModuleTest {
 
         BlockStore blockStore = world.getBlockChain().getBlockStore();
 
-        SignatureCache signatureCache = new SignatureCache();
+        SignatureCache signatureCache = world.getSignatureCache();
         TransactionPool transactionPool = new TransactionPoolImpl(config, repository, blockStore, receiptStore, signatureCache, null, null, 10, 100);
 
         Web3Impl web3 = createEnvironment(blockchain, receiptStore, repository, transactionPool, blockStore, signatureCache, true);
@@ -166,6 +169,7 @@ public class TransactionModuleTest {
         TransactionPool transactionPool = new TransactionPoolImpl(config, repository, blockStore, receiptStore, signatureCache, null, null, 10, 100);
 
         Web3Impl web3 = createEnvironment(blockchain, receiptStore, repository, transactionPool, blockStore, signatureCache,true);
+
 
         String txHash = sendRawTransaction(web3);
 
