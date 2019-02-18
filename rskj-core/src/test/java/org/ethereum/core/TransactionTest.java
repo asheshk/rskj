@@ -21,6 +21,7 @@ package org.ethereum.core;
 
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.RskAddress;
+import co.rsk.core.SignatureCache;
 import co.rsk.crypto.Keccak256;
 import org.ethereum.config.blockchain.GenesisConfig;
 import org.ethereum.config.net.MainNetConfig;
@@ -450,6 +451,7 @@ public class TransactionTest {
                             invokeFactory,
                             bestBlock,
                             new EthereumListenerAdapter(),
+                            new SignatureCache(),
                             0,
                             config.getVmConfig(),
                             config.getBlockchainConfig(),
@@ -724,6 +726,7 @@ public class TransactionTest {
                 new ProgramInvokeFactoryImpl(),
                 blockchain.getBestBlock(),
                 new EthereumListenerAdapter(),
+                new SignatureCache(),
                 0,
                 config.getVmConfig(),
                 config.getBlockchainConfig(),

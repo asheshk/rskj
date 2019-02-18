@@ -24,6 +24,7 @@ import co.rsk.config.TestSystemProperties;
 import co.rsk.config.VmConfig;
 import co.rsk.core.Coin;
 import co.rsk.core.RskAddress;
+import co.rsk.core.SignatureCache;
 import co.rsk.core.bc.BlockChainImpl;
 import co.rsk.core.bc.BlockExecutor;
 import co.rsk.core.bc.TransactionPoolImpl;
@@ -108,6 +109,7 @@ public class TestRunner {
         /* 1 */ // Create genesis + init pre state
         Block genesis = BlockBuilder.build(testCase.getGenesisBlockHeader(), null, null);
         Repository repository = RepositoryBuilder.build(testCase.getPre());
+        SignatureCache signatureCache = new SignatureCache();
 
         IndexedBlockStore blockStore = new IndexedBlockStore(new HashMap<>(), new HashMapDB(), null);
         blockStore.saveBlock(genesis, genesis.getCumulativeDifficulty(), true);
@@ -118,7 +120,7 @@ public class TestRunner {
         ds.init();
         ReceiptStore receiptStore = new ReceiptStoreImpl(ds);
 
-        TransactionPoolImpl transactionPool = new TransactionPoolImpl(config, repository, null, receiptStore, null, listener, 10, 100);
+        TransactionPoolImpl transactionPool = new TransactionPoolImpl(config, repository, null, receiptStore, signatureCache, null, listener, 10, 100);
 
         final ProgramInvokeFactoryImpl programInvokeFactory = new ProgramInvokeFactoryImpl();
         StateRootHandler stateRootHandler = new StateRootHandler(config, new HashMapDB(), new HashMap<>());
@@ -132,6 +134,7 @@ public class TestRunner {
                 programInvokeFactory,
                 block1,
                 null,
+                signatureCache,
                 totalGasUsed1,
                 config.getVmConfig(),
                 config.getBlockchainConfig(),

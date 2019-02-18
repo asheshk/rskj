@@ -25,6 +25,7 @@ import co.rsk.config.ConfigUtils;
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.Coin;
 import co.rsk.core.DifficultyCalculator;
+import co.rsk.core.SignatureCache;
 import co.rsk.crypto.Keccak256;
 import co.rsk.db.StateRootHandler;
 import co.rsk.remasc.RemascTransaction;
@@ -121,7 +122,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -163,7 +165,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -229,7 +232,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -280,7 +284,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -334,7 +339,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -395,7 +401,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -448,7 +455,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -506,7 +514,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -546,7 +555,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -586,7 +596,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -630,7 +641,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        getStateRootHandler(),
+                        new SignatureCache()
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -717,7 +729,8 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                 config,
                 Mockito.mock(ReceiptStore.class),
                 Mockito.mock(MinerClock.class),
-                getStateRootHandler()
+                getStateRootHandler(),
+                new SignatureCache()
         );
     }
 

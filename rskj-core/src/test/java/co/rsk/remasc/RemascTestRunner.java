@@ -22,6 +22,7 @@ import co.rsk.config.TestSystemProperties;
 import co.rsk.core.BlockDifficulty;
 import co.rsk.core.Coin;
 import co.rsk.core.RskAddress;
+import co.rsk.core.SignatureCache;
 import co.rsk.core.bc.BlockChainImpl;
 import co.rsk.core.bc.BlockExecutor;
 import co.rsk.crypto.Keccak256;
@@ -112,7 +113,9 @@ class RemascTestRunner {
     }
 
     public void start() {
-        this.blockchain = this.builder.build();
+
+        SignatureCache signatureCache = new SignatureCache();
+        this.blockchain = this.builder.setSignatureCache(signatureCache).build();
 
         ((BlockChainImpl)this.blockchain).setNoValidation(true);
 
@@ -133,6 +136,7 @@ class RemascTestRunner {
                     programInvokeFactory,
                     block,
                     null,
+                    signatureCache,
                     totalGasUsed,
                     builder.getConfig().getVmConfig(),
                     builder.getConfig().getBlockchainConfig(),

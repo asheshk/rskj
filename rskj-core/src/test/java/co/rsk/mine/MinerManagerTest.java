@@ -22,6 +22,7 @@ import co.rsk.config.ConfigUtils;
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.DifficultyCalculator;
 import co.rsk.core.RskImpl;
+import co.rsk.core.SignatureCache;
 import co.rsk.core.SnapshotManager;
 import co.rsk.db.StateRootHandler;
 import co.rsk.validators.BlockValidationRule;
@@ -56,6 +57,7 @@ public class MinerManagerTest {
     private TransactionPool transactionPool;
     private Repository repository;
     private BlockStore blockStore;
+    private SignatureCache signatureCache;
 
     @Before
     public void setup() {
@@ -64,6 +66,7 @@ public class MinerManagerTest {
         transactionPool = factory.getTransactionPool();
         repository = factory.getRepository();
         blockStore = factory.getBlockStore();
+        signatureCache = factory.getSignatureCache();
     }
 
     @Test
@@ -284,7 +287,8 @@ public class MinerManagerTest {
                         config,
                         null,
                         clock,
-                        new StateRootHandler(config, new HashMapDB(), new HashMap<>())
+                        new StateRootHandler(config, new HashMapDB(), new HashMap<>()),
+                        signatureCache
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()

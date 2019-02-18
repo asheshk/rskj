@@ -23,6 +23,7 @@ import co.rsk.config.RskSystemProperties;
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.Coin;
 import co.rsk.core.RskAddress;
+import co.rsk.core.SignatureCache;
 import co.rsk.core.bc.*;
 import co.rsk.db.RepositoryImpl;
 import co.rsk.db.StateRootHandler;
@@ -60,6 +61,7 @@ public class BlockChainBuilder {
     private RskSystemProperties config;
     private EthereumListener listener;
     private StateRootHandler stateRootHandler;
+    private SignatureCache signatureCache;
 
     public BlockChainBuilder setTesting(boolean value) {
         this.testing = value;
@@ -111,6 +113,11 @@ public class BlockChainBuilder {
         return this;
     }
 
+    public BlockChainBuilder setSignatureCache(SignatureCache signatureCache) {
+        this.signatureCache = signatureCache;
+        return this;
+    }
+
     public RskSystemProperties getConfig() {
         return config;
     }
@@ -149,6 +156,10 @@ public class BlockChainBuilder {
             listener = new BlockExecutorTest.SimpleEthereumListener();
         }
 
+        if (signatureCache == null) {
+            signatureCache = new SignatureCache();
+        }
+
         BlockValidatorBuilder validatorBuilder = new BlockValidatorBuilder();
 
         validatorBuilder.addBlockRootValidationRule().addBlockUnclesValidationRule(blockStore)
@@ -156,7 +167,7 @@ public class BlockChainBuilder {
 
         BlockValidator blockValidator = validatorBuilder.build();
 
-        TransactionPoolImpl transactionPool = new TransactionPoolImpl(config, this.repository, this.blockStore, receiptStore, new ProgramInvokeFactoryImpl(), new TestCompositeEthereumListener(), 10, 100);
+        TransactionPoolImpl transactionPool = new TransactionPoolImpl(config, this.repository, this.blockStore, receiptStore, signatureCache, new ProgramInvokeFactoryImpl(), new TestCompositeEthereumListener(), 10, 100);
 
         final ProgramInvokeFactoryImpl programInvokeFactory = new ProgramInvokeFactoryImpl();
         BlockChainImpl blockChain = new BlockChainImpl(this.repository, this.blockStore, receiptStore, transactionPool, listener, blockValidator, false, 1, new BlockExecutor(this.repository, (tx1, txindex1, coinbase, track1, block1, totalGasUsed1) -> new TransactionExecutor(
@@ -169,6 +180,7 @@ public class BlockChainBuilder {
                 programInvokeFactory,
                 block1,
                 listener,
+                signatureCache,
                 totalGasUsed1,
                 config.getVmConfig(),
                 config.getBlockchainConfig(),
@@ -214,6 +226,7 @@ public class BlockChainBuilder {
                     programInvokeFactory1,
                     block1,
                     listener,
+                    signatureCache,
                     totalGasUsed1,
                     config.getVmConfig(),
                     config.getBlockchainConfig(),

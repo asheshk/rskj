@@ -243,6 +243,7 @@ public class TransactionTest {
                             invokeFactory,
                             bestBlock,
                             new EthereumListenerAdapter(),
+                            new SignatureCache(),
                             0,
                             config.getVmConfig(),
                             config.getBlockchainConfig(),

@@ -5,6 +5,7 @@ import co.rsk.config.ConfigUtils;
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.BlockDifficulty;
 import co.rsk.core.DifficultyCalculator;
+import co.rsk.core.SignatureCache;
 import co.rsk.core.bc.BlockChainImpl;
 import co.rsk.core.bc.BlockChainImplTest;
 import co.rsk.db.StateRootHandler;
@@ -45,6 +46,7 @@ public class MainNetMinerTest {
     private BlockStore blockStore;
     private NodeBlockProcessor blockProcessor;
     private Repository repository;
+    private SignatureCache signatureCache;
 
     @Before
     public void setup() {
@@ -56,6 +58,7 @@ public class MainNetMinerTest {
         blockStore = factory.getBlockStore();
         blockProcessor = factory.getNodeBlockProcessor();
         repository = factory.getRepository();
+        signatureCache = factory.getSignatureCache();
     }
 
     /*
@@ -66,7 +69,7 @@ public class MainNetMinerTest {
     @Test
     public void submitBitcoinBlockProofOfWorkNotGoodEnough() {
         /* We need a low target */
-        BlockChainImpl blockchain = new BlockChainBuilder().build();
+        BlockChainImpl blockchain = new BlockChainBuilder().setSignatureCache(signatureCache).build();
         Genesis gen = (Genesis) BlockChainImplTest.getGenesisBlock(blockchain);
         gen.getHeader().setDifficulty(new BlockDifficulty(BigInteger.valueOf(Long.MAX_VALUE)));
         blockchain.setStatus(gen, gen.getCumulativeDifficulty());
@@ -205,7 +208,8 @@ public class MainNetMinerTest {
                 config,
                 null,
                 clock,
-                new StateRootHandler(config, new HashMapDB(), new HashMap<>())
+                new StateRootHandler(config, new HashMapDB(), new HashMap<>()),
+                signatureCache
         );
     }
 }

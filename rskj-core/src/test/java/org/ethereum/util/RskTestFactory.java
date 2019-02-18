@@ -116,6 +116,7 @@ public class RskTestFactory extends RskContext {
                     getProgramInvokeFactory(),
                     block,
                     getCompositeEthereumListener(),
+                    getSignatureCache(),
                     totalGasUsed,
                     config.getVmConfig(),
                     config.getBlockchainConfig(),

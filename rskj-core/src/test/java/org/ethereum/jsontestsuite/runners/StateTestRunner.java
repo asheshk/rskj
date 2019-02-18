@@ -21,6 +21,7 @@ package org.ethereum.jsontestsuite.runners;
 
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.RskAddress;
+import co.rsk.core.SignatureCache;
 import co.rsk.core.bc.BlockChainImpl;
 import co.rsk.core.bc.BlockExecutor;
 import co.rsk.db.StateRootHandler;
@@ -57,6 +58,7 @@ public class StateTestRunner {
 
     private static Logger logger = LoggerFactory.getLogger("TCK-Test");
     private final TestSystemProperties config = new TestSystemProperties();
+    private final SignatureCache signatureCache = new SignatureCache();
 
     public static List<String> run(StateTestCase stateTestCase2) {
         return new StateTestRunner(stateTestCase2).runImpl();
@@ -87,6 +89,7 @@ public class StateTestRunner {
                 invokeFactory,
                 blockchain.getBestBlock(),
                 new EthereumListenerAdapter(),
+                signatureCache,
                 0,
                 config.getVmConfig(),
                 config.getBlockchainConfig(),
@@ -134,6 +137,7 @@ public class StateTestRunner {
                 programInvokeFactory,
                 block1,
                 null,
+                signatureCache,
                 totalGasUsed1,
                 config.getVmConfig(),
                 config.getBlockchainConfig(),
