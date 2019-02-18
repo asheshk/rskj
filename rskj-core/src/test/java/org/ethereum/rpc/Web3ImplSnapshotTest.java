@@ -59,11 +59,13 @@ public class Web3ImplSnapshotTest {
     private Blockchain blockchain;
     private SignatureCache signatureCache;
 
+
     @Before
     public void setUp() {
         factory = new RskTestFactory();
         blockchain = factory.getBlockchain();
         signatureCache = factory.getSignatureCache();
+
     }
 
     @Test
@@ -219,6 +221,7 @@ public class Web3ImplSnapshotTest {
                         clock,
                         new StateRootHandler(config, new HashMapDB(), new HashMap<>()),
                         signatureCache
+
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
