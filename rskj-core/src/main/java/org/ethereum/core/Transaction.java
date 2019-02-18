@@ -19,6 +19,7 @@
 
 package org.ethereum.core;
 
+import co.rsk.core.SignatureCache;
 import co.rsk.config.RskSystemProperties;
 import co.rsk.core.Coin;
 import co.rsk.core.RskAddress;
@@ -509,4 +510,13 @@ public class Transaction {
     public void setLocalCallTransaction(boolean isLocalCall) {
         this.isLocalCall = isLocalCall;
     }
+
+    public void computeSenderTxBroadcasted(SignatureCache signatureCache) {
+        sender = signatureCache.getSenderCacheInBroadcastTx(getRawHash().getBytes(), getSignature());
+    }
+
+    public void computeSenderTxInBlock(SignatureCache signatureCache) {
+        sender = signatureCache.getSenderCacheInBlock(getRawHash().getBytes(), getSignature());
+    }
+
 }

@@ -19,6 +19,7 @@
 
 package org.ethereum.core.genesis;
 
+import co.rsk.core.SignatureCache;
 import co.rsk.config.RskSystemProperties;
 import co.rsk.core.BlockDifficulty;
 import co.rsk.core.RskAddress;
@@ -65,17 +66,19 @@ public class BlockChainLoader {
     private final BlockValidator blockValidator;
     private final Genesis genesis;
     private final StateRootHandler stateRootHandler;
+    private final SignatureCache signatureCache;
 
     public BlockChainLoader(
             RskSystemProperties config,
-            org.ethereum.core.Repository repository,
-            org.ethereum.db.BlockStore blockStore,
+            Repository repository,
+            BlockStore blockStore,
             ReceiptStore receiptStore,
             TransactionPool transactionPool,
             EthereumListener listener,
             BlockValidator blockValidator,
             Genesis genesis,
-            StateRootHandler stateRootHandler) {
+            StateRootHandler stateRootHandler,
+            SignatureCache signatureCache) {
 
         this.config = config;
         this.blockStore = blockStore;
@@ -86,6 +89,7 @@ public class BlockChainLoader {
         this.blockValidator = blockValidator;
         this.genesis = genesis;
         this.stateRootHandler = stateRootHandler;
+        this.signatureCache = signatureCache;
     }
 
     public BlockChainImpl loadBlockchain() {
@@ -111,6 +115,7 @@ public class BlockChainLoader {
                             programInvokeFactory,
                             block1,
                             listener,
+                            signatureCache,
                             totalGasUsed1,
                             config.getVmConfig(),
                             config.getBlockchainConfig(),

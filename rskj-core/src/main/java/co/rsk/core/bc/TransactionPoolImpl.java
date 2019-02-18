@@ -18,11 +18,13 @@
 
 package co.rsk.core.bc;
 
+import co.rsk.core.SignatureCache;
 import co.rsk.config.RskSystemProperties;
 import co.rsk.core.Coin;
 import co.rsk.crypto.Keccak256;
 import co.rsk.net.TransactionValidationResult;
 import co.rsk.net.handler.TxPendingValidator;
+import co.rsk.remasc.RemascTransaction;
 import co.rsk.trie.Trie;
 import com.google.common.annotations.VisibleForTesting;
 import org.ethereum.core.*;
@@ -64,6 +66,7 @@ public class TransactionPoolImpl implements TransactionPool {
     private final BlockStore blockStore;
     private final Repository repository;
     private final ReceiptStore receiptStore;
+    private final SignatureCache signatureCache;
     private final ProgramInvokeFactory programInvokeFactory;
     private final EthereumListener listener;
     private final int outdatedThreshold;
@@ -79,6 +82,7 @@ public class TransactionPoolImpl implements TransactionPool {
     public TransactionPoolImpl(BlockStore blockStore,
                                ReceiptStore receiptStore,
                                EthereumListener listener,
+                               SignatureCache signatureCache,
                                ProgramInvokeFactory programInvokeFactory,
                                Repository repository,
                                RskSystemProperties config) {
@@ -86,6 +90,7 @@ public class TransactionPoolImpl implements TransactionPool {
                 repository,
                 blockStore,
                 receiptStore,
+                signatureCache,
                 programInvokeFactory,
                 listener,
                 config.txOutdatedThreshold(),
@@ -96,6 +101,7 @@ public class TransactionPoolImpl implements TransactionPool {
                                Repository repository,
                                BlockStore blockStore,
                                ReceiptStore receiptStore,
+                               SignatureCache signatureCache,
                                ProgramInvokeFactory programInvokeFactory,
                                EthereumListener listener,
                                int outdatedThreshold,
@@ -104,6 +110,7 @@ public class TransactionPoolImpl implements TransactionPool {
         this.blockStore = blockStore;
         this.repository = repository;
         this.receiptStore = receiptStore;
+        this.signatureCache = signatureCache;
         this.programInvokeFactory = programInvokeFactory;
         this.listener = listener;
         this.outdatedThreshold = outdatedThreshold;
@@ -161,6 +168,7 @@ public class TransactionPoolImpl implements TransactionPool {
                     programInvokeFactory,
                     createFakePendingBlock(bestBlock),
                     new EthereumListenerAdapter(),
+                    signatureCache,
                     0,
                     config.getVmConfig(),
                     config.getBlockchainConfig(),
@@ -252,6 +260,10 @@ public class TransactionPoolImpl implements TransactionPool {
         transactionBlocks.put(hash, bnumber);
         final long timestampSeconds = this.getCurrentTimeInSeconds();
         transactionTimes.put(hash, timestampSeconds);
+
+        if (!(tx instanceof RemascTransaction)) {
+            tx.computeSenderTxBroadcasted(signatureCache);
+        }
 
         BigInteger currentNonce = getPendingState().getNonce(tx.getSender());
         BigInteger txNonce = tx.getNonceAsInteger();

@@ -233,6 +233,7 @@ public class RskContext implements NodeBootstrapper {
                     getBlockStore(),
                     getReceiptStore(),
                     getCompositeEthereumListener(),
+                    getSignatureCache(),
                     getProgramInvokeFactory(),
                     getRepository(),
                     getRskSystemProperties()
@@ -741,7 +742,8 @@ public class RskContext implements NodeBootstrapper {
                     getCompositeEthereumListener(),
                     getBlockValidator(),
                     getGenesis(),
-                    getStateRootHandler()
+                    getStateRootHandler(),
+                    getSignatureCache()
             );
         }
 
@@ -944,7 +946,8 @@ public class RskContext implements NodeBootstrapper {
                     getRskSystemProperties(),
                     getReceiptStore(),
                     getMinerClock(),
-                    getStateRootHandler()
+                    getStateRootHandler(),
+                    getSignatureCache()
             );
         }
 
