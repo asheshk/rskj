@@ -28,6 +28,7 @@ import co.rsk.core.DifficultyCalculator;
 import co.rsk.crypto.Keccak256;
 import co.rsk.db.StateRootHandler;
 import co.rsk.remasc.RemascTransaction;
+import co.rsk.trie.TrieConverter;
 import co.rsk.validators.BlockUnclesValidationRule;
 import co.rsk.validators.BlockValidationRule;
 import co.rsk.validators.ProofOfWorkRule;
@@ -62,6 +63,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
     private Repository repository;
     private BlockStore blockStore;
     private TransactionPool transactionPool;
+    private StateRootHandler stateRootHandler;
 
     public MinerServerTest(TestSystemProperties config) {
         super(config);
@@ -75,6 +77,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
         repository = factory.getRepository();
         blockStore = factory.getBlockStore();
         transactionPool = factory.getTransactionPool();
+        stateRootHandler = factory.getStateRootHandler();
     }
 
     @Test
@@ -83,6 +86,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
         Repository repository = Mockito.mock(Repository.class);
         Mockito.when(repository.getSnapshotTo(Mockito.any())).thenReturn(repository);
         Mockito.when(repository.getRoot()).thenReturn(this.repository.getRoot());
+        Mockito.when(repository.getMutableTrie()).thenReturn(this.repository.getMutableTrie());
         Mockito.when(repository.startTracking()).thenReturn(repository);
 
         Transaction tx1 = Tx.create(config, 0, 21000, 100, 0, 0, 0);
@@ -121,7 +125,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -163,7 +167,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -229,7 +233,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -280,7 +284,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -334,7 +338,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -395,7 +399,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -448,7 +452,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -506,7 +510,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -546,7 +550,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -586,7 +590,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -630,7 +634,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                         config,
                         null,
                         clock,
-                        getStateRootHandler()
+                        stateRootHandler
                 ),
                 clock,
                 ConfigUtils.getDefaultMiningConfig()
@@ -717,11 +721,7 @@ public class MinerServerTest extends ParameterizedNetworkUpgradeTest {
                 config,
                 Mockito.mock(ReceiptStore.class),
                 Mockito.mock(MinerClock.class),
-                getStateRootHandler()
+                stateRootHandler
         );
-    }
-
-    private StateRootHandler getStateRootHandler() {
-        return new StateRootHandler(config, new HashMapDB(), new HashMap<>());
     }
 }

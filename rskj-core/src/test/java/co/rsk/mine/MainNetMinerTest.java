@@ -10,6 +10,7 @@ import co.rsk.core.bc.BlockChainImplTest;
 import co.rsk.db.StateRootHandler;
 import co.rsk.net.NodeBlockProcessor;
 import co.rsk.test.builders.BlockChainBuilder;
+import co.rsk.trie.TrieConverter;
 import co.rsk.validators.BlockUnclesValidationRule;
 import co.rsk.validators.ProofOfWorkRule;
 import org.ethereum.config.blockchain.FallbackMainNetConfig;
@@ -45,6 +46,7 @@ public class MainNetMinerTest {
     private BlockStore blockStore;
     private NodeBlockProcessor blockProcessor;
     private Repository repository;
+    private StateRootHandler stateRootHandler;
 
     @Before
     public void setup() {
@@ -56,6 +58,7 @@ public class MainNetMinerTest {
         blockStore = factory.getBlockStore();
         blockProcessor = factory.getNodeBlockProcessor();
         repository = factory.getRepository();
+        stateRootHandler = factory.getStateRootHandler();
     }
 
     /*
@@ -205,7 +208,7 @@ public class MainNetMinerTest {
                 config,
                 null,
                 clock,
-                new StateRootHandler(config, new HashMapDB(), new HashMap<>())
+                stateRootHandler
         );
     }
 }
