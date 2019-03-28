@@ -71,5 +71,7 @@ public interface BlockchainConfig {
 
     boolean isRskip106();
 
+    boolean isRskip119();
+
     boolean isRskipPublicReceiveHeaders();
 }

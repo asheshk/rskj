@@ -41,6 +41,11 @@ public class DevNetSecondForkConfig extends DevNetOrchid060Config {
     }
 
     @Override
+    public boolean isRskip119() {
+        return true;
+    }
+
+    @Override
     public boolean isRskipPublicReceiveHeaders() {
         return true;
     }

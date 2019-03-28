@@ -19,6 +19,7 @@
 package co.rsk.vm;
 
 import co.rsk.config.TestSystemProperties;
+import co.rsk.pcc.blockheader.BlockHeaderContract;
 import co.rsk.pcc.bto.BTOUtils;
 import co.rsk.peg.Bridge;
 import org.ethereum.config.BlockchainConfig;
@@ -80,5 +81,30 @@ public class PrecompiledContractTest {
         Assert.assertEquals(BTOUtils.class, btoUtils1.getClass());
         Assert.assertEquals(BTOUtils.class, btoUtils2.getClass());
         Assert.assertNotSame(btoUtils1, btoUtils2);
+    }
+
+    @Test
+    public void getBlockHeaderContractBeforeRskip119() {
+        BlockchainConfig afterRskip119 = mock(BlockchainConfig.class);
+        when(afterRskip119.isRskip119()).thenReturn(false);
+        DataWord blockHeaderContractAddress = new DataWord(PrecompiledContracts.BLOCK_HEADER_ADDR.getBytes());
+        PrecompiledContract blockHeaderContract = precompiledContracts.getContractForAddress(afterRskip119, blockHeaderContractAddress);
+
+        Assert.assertNull(blockHeaderContract);
+    }
+
+    @Test
+    public void getBlockHeaderContractAfterRskip119() {
+        BlockchainConfig afterRskip119 = mock(BlockchainConfig.class);
+        when(afterRskip119.isRskip119()).thenReturn(true);
+        DataWord blockHeaderContractAddress = new DataWord(PrecompiledContracts.BLOCK_HEADER_ADDR.getBytes());
+        PrecompiledContract blockHeaderContract1 = precompiledContracts.getContractForAddress(afterRskip119, blockHeaderContractAddress);
+        PrecompiledContract blockHeaderContract2 = precompiledContracts.getContractForAddress(afterRskip119, blockHeaderContractAddress);
+
+        Assert.assertNotNull(blockHeaderContract1);
+        Assert.assertNotNull(blockHeaderContract2);
+        Assert.assertEquals(BlockHeaderContract.class, blockHeaderContract1.getClass());
+        Assert.assertEquals(BlockHeaderContract.class, blockHeaderContract2.getClass());
+        Assert.assertNotSame(blockHeaderContract1, blockHeaderContract2);
     }
 }

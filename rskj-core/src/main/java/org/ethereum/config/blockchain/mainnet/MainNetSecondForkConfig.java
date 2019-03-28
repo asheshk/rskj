@@ -41,6 +41,11 @@ public class MainNetSecondForkConfig extends MainNetOrchid060Config {
     }
 
     @Override
+    public boolean isRskip119() {
+        return true;
+    }
+
+    @Override
     public boolean isRskipPublicReceiveHeaders() {
         return true;
     }

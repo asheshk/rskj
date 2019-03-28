@@ -44,6 +44,7 @@ public class PrecompiledContractAddressTests {
     public static final String BRIDGE_ADDR_STR = "0000000000000000000000000000000001000006";
     public static final String REMASC_ADDR_STR = "0000000000000000000000000000000001000008";
     public static final String BTOUTILS_ADDR_STR = "0000000000000000000000000000000001000009";
+    public static final String BLOCK_HEADER_ADDR_STR = "0000000000000000000000000000000001000010";
 
     private final TestSystemProperties config = new TestSystemProperties();
 
@@ -59,6 +60,7 @@ public class PrecompiledContractAddressTests {
         checkAddr(pcList,BRIDGE_ADDR_STR ,"Bridge");
         checkAddr(pcList,REMASC_ADDR_STR ,"RemascContract");
         checkAddr(pcList,BTOUTILS_ADDR_STR,"BTOUtils");
+        checkAddr(pcList,BLOCK_HEADER_ADDR_STR,"BlockHeaderContract");
     }
 
     void checkAddr(PrecompiledContracts pcList,String addr,String className) {
@@ -66,6 +68,7 @@ public class PrecompiledContractAddressTests {
 
         // Enabling necessary RSKIPs for every precompiled contract to be available
         when(bcConfig.isRskip106()).thenReturn(true);
+        when(bcConfig.isRskip119()).thenReturn(true);
 
         RskAddress a;
         a = new RskAddress(addr);
