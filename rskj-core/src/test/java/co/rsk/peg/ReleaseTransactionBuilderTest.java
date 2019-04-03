@@ -78,13 +78,13 @@ public class ReleaseTransactionBuilderTest {
         when(wallet.getUTXOProvider()).thenReturn(utxoProvider);
         when(wallet.getWatchedAddresses()).thenReturn(Arrays.asList(changeAddress));
         when(utxoProvider.getOpenTransactionOutputs(any(List.class))).then((InvocationOnMock m) -> {
-            List<Address> addresses = m.getArgumentAt(0, List.class);
+            List<Address> addresses = m.<List>getArgument(0);
             Assert.assertEquals(Arrays.asList(changeAddress), addresses);
             return availableUTXOs;
         });
 
         Mockito.doAnswer((InvocationOnMock m) -> {
-            SendRequest sr = m.getArgumentAt(0, SendRequest.class);
+            SendRequest sr = m.<SendRequest>getArgument(0);
 
             Assert.assertEquals(Coin.MILLICOIN.multiply(2), sr.feePerKb);
             Assert.assertEquals(Wallet.MissingSigsMode.USE_OP_ZERO, sr.missingSigsMode);
@@ -192,13 +192,13 @@ public class ReleaseTransactionBuilderTest {
         when(wallet.getUTXOProvider()).thenReturn(utxoProvider);
         when(wallet.getWatchedAddresses()).thenReturn(Arrays.asList(changeAddress));
         when(utxoProvider.getOpenTransactionOutputs(any(List.class))).then((InvocationOnMock m) -> {
-            List<Address> addresses = m.getArgumentAt(0, List.class);
+            List<Address> addresses = m.<List>getArgument(0);
             Assert.assertEquals(Arrays.asList(changeAddress), addresses);
             throw new UTXOProviderException();
         });
 
         Mockito.doAnswer((InvocationOnMock m) -> {
-            SendRequest sr = m.getArgumentAt(0, SendRequest.class);
+            SendRequest sr = m.<SendRequest>getArgument(0);
 
             Assert.assertEquals(Coin.MILLICOIN.multiply(2), sr.feePerKb);
             Assert.assertEquals(Wallet.MissingSigsMode.USE_OP_ZERO, sr.missingSigsMode);
@@ -240,13 +240,13 @@ public class ReleaseTransactionBuilderTest {
         when(wallet.getUTXOProvider()).thenReturn(utxoProvider);
         when(wallet.getWatchedAddresses()).thenReturn(Arrays.asList(to));
         when(utxoProvider.getOpenTransactionOutputs(any(List.class))).then((InvocationOnMock m) -> {
-            List<Address> addresses = m.getArgumentAt(0, List.class);
+            List<Address> addresses = m.<List>getArgument(0);
             Assert.assertEquals(Arrays.asList(to), addresses);
             return availableUTXOs;
         });
 
         Mockito.doAnswer((InvocationOnMock m) -> {
-            SendRequest sr = m.getArgumentAt(0, SendRequest.class);
+            SendRequest sr = m.<SendRequest>getArgument(0);
 
             Assert.assertEquals(Coin.MILLICOIN.multiply(2), sr.feePerKb);
             Assert.assertEquals(Wallet.MissingSigsMode.USE_OP_ZERO, sr.missingSigsMode);
@@ -358,13 +358,13 @@ public class ReleaseTransactionBuilderTest {
         when(wallet.getUTXOProvider()).thenReturn(utxoProvider);
         when(wallet.getWatchedAddresses()).thenReturn(Arrays.asList(to));
         when(utxoProvider.getOpenTransactionOutputs(any(List.class))).then((InvocationOnMock m) -> {
-            List<Address> addresses = m.getArgumentAt(0, List.class);
+            List<Address> addresses = m.<List>getArgument(0);
             Assert.assertEquals(Arrays.asList(to), addresses);
             throw new UTXOProviderException();
         });
 
         Mockito.doAnswer((InvocationOnMock m) -> {
-            SendRequest sr = m.getArgumentAt(0, SendRequest.class);
+            SendRequest sr = m.<SendRequest>getArgument(0);
 
             Assert.assertEquals(Coin.MILLICOIN.multiply(2), sr.feePerKb);
             Assert.assertEquals(Wallet.MissingSigsMode.USE_OP_ZERO, sr.missingSigsMode);
@@ -394,7 +394,7 @@ public class ReleaseTransactionBuilderTest {
 
     private void mockCompleteTxWithThrowForBuildToAmount(Wallet wallet, Coin expectedAmount, Address expectedAddress, Throwable t) throws InsufficientMoneyException {
         Mockito.doAnswer((InvocationOnMock m) -> {
-            SendRequest sr = m.getArgumentAt(0, SendRequest.class);
+            SendRequest sr = m.<SendRequest>getArgument(0);
 
             Assert.assertEquals(Coin.MILLICOIN.multiply(2), sr.feePerKb);
             Assert.assertEquals(Wallet.MissingSigsMode.USE_OP_ZERO, sr.missingSigsMode);
@@ -414,7 +414,7 @@ public class ReleaseTransactionBuilderTest {
 
     private void mockCompleteTxWithThrowForEmptying(Wallet wallet, Address expectedAddress, Throwable t) throws InsufficientMoneyException {
         Mockito.doAnswer((InvocationOnMock m) -> {
-            SendRequest sr = m.getArgumentAt(0, SendRequest.class);
+            SendRequest sr = m.<SendRequest>getArgument(0);
 
             Assert.assertEquals(Coin.MILLICOIN.multiply(2), sr.feePerKb);
             Assert.assertEquals(Wallet.MissingSigsMode.USE_OP_ZERO, sr.missingSigsMode);

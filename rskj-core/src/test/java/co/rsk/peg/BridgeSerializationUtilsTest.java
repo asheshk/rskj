@@ -859,7 +859,7 @@ public class BridgeSerializationUtilsTest {
     private void mock_RLP_encodeElement() {
         // Identity prepending byte '0xdd'
         when(RLP.encodeElement(any(byte[].class))).then((InvocationOnMock invocation) -> {
-            byte[] arg = invocation.getArgumentAt(0, byte[].class);
+            byte[] arg = invocation.<byte[]>getArgument(0);
             byte[] result = new byte[arg.length+1];
             result[0] = (byte) 0xdd;
             for (int i = 0; i < arg.length; i++)
@@ -871,7 +871,7 @@ public class BridgeSerializationUtilsTest {
     private void mock_RLP_encodeBigInteger() {
         // To byte array prepending byte '0xff'
         when(RLP.encodeBigInteger(any(BigInteger.class))).then((InvocationOnMock invocation) -> {
-            byte[] arg = (invocation.getArgumentAt(0, BigInteger.class)).toByteArray();
+            byte[] arg = (invocation.<BigInteger>getArgument(0)).toByteArray();
             byte[] result = new byte[arg.length+1];
             result[0] = (byte) 0xff;
             for (int i = 0; i < arg.length; i++)
@@ -898,7 +898,7 @@ public class BridgeSerializationUtilsTest {
         // 03050704[a bytes][b bytes][c bytes]
         when(RLP.decode2(any(byte[].class))).then((InvocationOnMock invocation) -> {
             RLPList result = new RLPList();
-            byte[] arg = invocation.getArgumentAt(0, byte[].class);
+            byte[] arg = invocation.<byte[]>getArgument(0);
             // Even byte -> hash of 64 bytes with same char from byte
             // Odd byte -> long from byte
             for (int i = 0; i < arg.length; i++) {
@@ -918,7 +918,7 @@ public class BridgeSerializationUtilsTest {
 
     private void mock_RLP_decode2(InnerListMode mode) {
         when(RLP.decode2(any(byte[].class))).then((InvocationOnMock invocation) -> {
-            byte[] bytes = invocation.getArgumentAt(0, byte[].class);
+            byte[] bytes = invocation.<byte[]>getArgument(0);
             return new ArrayList<>(Arrays.asList(decodeTwoMock(bytes, mode)));
         });
     }
