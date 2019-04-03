@@ -298,7 +298,7 @@ public class TransactionModuleTest {
 
         EthModule ethModule = new EthModule(config, blockchain, reversibleTransactionExecutor1, new ExecutionBlockRetriever(blockchain, null, null), new EthModuleSolidityDisabled(), new EthModuleWalletEnabled(wallet), transactionModule);
         TxPoolModule txPoolModule = new TxPoolModuleImpl(transactionPool);
-        DebugModule debugModule = new DebugModuleImpl(Web3Mocks.getMockMessageHandler());
+        DebugModule debugModule = new DebugModuleImpl(null, null, Web3Mocks.getMockMessageHandler());
 
         ChannelManager channelManager = new SimpleChannelManager();
         return new Web3RskImpl(

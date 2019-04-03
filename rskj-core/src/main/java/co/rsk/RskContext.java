@@ -456,7 +456,7 @@ public class RskContext implements NodeBootstrapper {
 
     public DebugModule getDebugModule() {
         if (debugModule == null) {
-            debugModule = new DebugModuleImpl(getNodeMessageHandler());
+            debugModule = new DebugModuleImpl(getBlockStore(), getReceiptStore(), getNodeMessageHandler());
         }
 
         return debugModule;
