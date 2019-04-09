@@ -19,7 +19,6 @@
 package co.rsk.core.bc;
 
 import co.rsk.core.Coin;
-import co.rsk.core.RskAddress;
 import co.rsk.db.StateRootHandler;
 import org.bouncycastle.util.encoders.Hex;
 import org.ethereum.core.*;
@@ -27,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,12 +39,12 @@ public class BlockTransactionExecutor {
     private static final Logger logger = LoggerFactory.getLogger("blockexecutor");
 
     private final Repository repository;
-    private final TransactionExecutorFactory transactionExecutorFactory;
+    private final BlockExecutor.TransactionExecutorFactory transactionExecutorFactory;
     private final StateRootHandler stateRootHandler;
 
     public BlockTransactionExecutor(
             Repository repository,
-            TransactionExecutorFactory transactionExecutorFactory,
+            BlockExecutor.TransactionExecutorFactory transactionExecutorFactory,
             StateRootHandler stateRootHandler) {
         this.repository = repository;
         this.transactionExecutorFactory = transactionExecutorFactory;
@@ -147,9 +145,5 @@ public class BlockTransactionExecutor {
         }
 
         return new BlockResult(executedTransactions, receipts, lastStateRootHash, totalGasUsed, totalPaidFees);
-    }
-
-    public interface TransactionExecutorFactory {
-        TransactionExecutor newInstance(Transaction tx, int txindex, RskAddress coinbase, Repository track, Block block, long totalGasUsed);
     }
 }
