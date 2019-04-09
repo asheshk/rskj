@@ -5,6 +5,7 @@ import co.rsk.blockchain.utils.BlockGenerator;
 import co.rsk.config.RskSystemProperties;
 import co.rsk.config.TestSystemProperties;
 import co.rsk.core.bc.BlockExecutor;
+import co.rsk.core.bc.BlockTransactionExecutor;
 import co.rsk.db.RepositoryImpl;
 import co.rsk.db.StateRootHandler;
 import co.rsk.net.sync.SyncConfiguration;
@@ -34,6 +35,7 @@ public class RskTestFactory extends RskContext {
     private final TestSystemProperties config;
 
     private BlockExecutor blockExecutor;
+    private BlockTransactionExecutor blockTransactionExecutor;
     private BlockExecutor.TransactionExecutorFactory transactionExecutorFactory;
     private PrecompiledContracts precompiledContracts;
 
@@ -101,6 +103,18 @@ public class RskTestFactory extends RskContext {
         }
 
         return blockExecutor;
+    }
+
+    public BlockTransactionExecutor getBlockTransactionExecutor() {
+        if (blockTransactionExecutor == null) {
+            blockTransactionExecutor = new BlockTransactionExecutor(
+                    getRepository(),
+                    getTransactionExecutorFactory(),
+                    getStateRootHandler()
+            );
+        }
+
+        return blockTransactionExecutor;
     }
 
     private BlockExecutor.TransactionExecutorFactory getTransactionExecutorFactory() {

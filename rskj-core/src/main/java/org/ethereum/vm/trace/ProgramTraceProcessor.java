@@ -49,6 +49,8 @@ public class ProgramTraceProcessor {
         this.vmTraceCompressed = vmTraceCompressed;
     }
 
+    public boolean enabled() { return this.vmTrace; }
+
     public void processProgramTrace(ProgramTrace programTrace, Keccak256 txHash)  throws IOException {
         if (!this.vmTrace) {
             return;
