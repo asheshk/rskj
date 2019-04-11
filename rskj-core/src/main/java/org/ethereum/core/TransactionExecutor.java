@@ -164,7 +164,7 @@ public class TransactionExecutor {
         }
 
         if (!(tx instanceof RemascTransaction)) {
-            tx.computeSenderTxInBlock(signatureCache);
+            tx.computeSenderOfTransactionInBlock(signatureCache);
         }
 
         BigInteger reqNonce = track.getNonce(tx.getSender());
