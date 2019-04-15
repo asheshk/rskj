@@ -36,6 +36,7 @@ import org.ethereum.vm.program.Program;
 import org.ethereum.vm.program.ProgramResult;
 import org.ethereum.vm.program.invoke.ProgramInvoke;
 import org.ethereum.vm.program.invoke.ProgramInvokeFactory;
+import org.ethereum.vm.trace.FileProgramTraceProcessor;
 import org.ethereum.vm.trace.ProgramTrace;
 import org.ethereum.vm.trace.ProgramTraceProcessor;
 import org.slf4j.Logger;
@@ -51,7 +52,6 @@ import static org.apache.commons.lang3.ArrayUtils.getLength;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.ethereum.util.BIUtil.*;
 import static org.ethereum.util.ByteUtil.EMPTY_BYTE_ARRAY;
-import static org.ethereum.vm.VMUtils.saveProgramTraceFile;
 
 /**
  * @author Roman Mandeleil
@@ -130,9 +130,8 @@ public class TransactionExecutor {
             programInvokeFactory, executionBlock, listener, gasUsedInTheBlock,
             vmConfig, blockchainConfig, playVm, remascEnabled,
             precompiledContracts,
-            new ProgramTraceProcessor(vmTrace, databaseDir, vmTraceDir, vmTraceCompressed));
+            new FileProgramTraceProcessor(vmTrace, databaseDir, vmTraceDir, vmTraceCompressed));
     }
-
 
     /**
      * Do all the basic validation, if the executor

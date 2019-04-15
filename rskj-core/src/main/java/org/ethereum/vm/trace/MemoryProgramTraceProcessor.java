@@ -22,12 +22,29 @@ package org.ethereum.vm.trace;
 import co.rsk.crypto.Keccak256;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by ajlopez on 15/04/2019.
+ * Created by Angel on 15/04/2019.
  */
-public interface ProgramTraceProcessor {
-    boolean enabled();
+public class MemoryProgramTraceProcessor implements ProgramTraceProcessor {
+    private final boolean traceEnabled;
+    private final Map<Keccak256, ProgramTrace> traces = new HashMap<>();
 
-    void processProgramTrace(ProgramTrace programTrace, Keccak256 txHash)  throws IOException;
+    public MemoryProgramTraceProcessor(boolean traceEnabled) {
+        this.traceEnabled = traceEnabled;
+    }
+
+    @Override
+    public boolean enabled() { return this.traceEnabled; }
+
+    @Override
+    public void processProgramTrace(ProgramTrace programTrace, Keccak256 txHash)  throws IOException {
+        if (!this.traceEnabled) {
+            return;
+        }
+
+        this.traces.put(txHash, programTrace);
+    }
 }
