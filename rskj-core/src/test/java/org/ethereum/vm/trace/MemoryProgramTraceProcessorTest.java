@@ -76,5 +76,15 @@ public class MemoryProgramTraceProcessorTest {
 
         JsonNode jnode = processor.getProgramTraceAsJsonNode(hash);
         Assert.assertNotNull(jnode);
+
+        String jsonText = jnode.toString();
+
+        Assert.assertNotNull(jsonText);
+        Assert.assertTrue(jsonText.contains("\"contractAddress\""));
+        Assert.assertTrue(jsonText.contains("\"initStorage\""));
+        Assert.assertTrue(jsonText.contains("\"currentStorage\""));
+        Assert.assertTrue(jsonText.contains("\"structLogs\""));
+        Assert.assertTrue(jsonText.contains("\"result\""));
+        Assert.assertTrue(jsonText.contains("\"storageSize\""));
     }
 }
